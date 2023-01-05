@@ -1,0 +1,1 @@
+web: uvicorn main:app --env-file=.env --host=0.0.0.0 --port=${PORT:-5000}
