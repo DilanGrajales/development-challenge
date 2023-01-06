@@ -6,6 +6,7 @@
 - Postgres
 - SQLAlchemy
 - Railway
+- Data from https://www.kaggle.com/datasets/knightbearr/sales-product-data?select=Sales_September_2019.csv (CSV file)
 
   ### API Endpoints
   1. UnitMeasurement (CRUD)
