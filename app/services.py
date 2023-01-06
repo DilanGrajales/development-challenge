@@ -1,5 +1,6 @@
-from sqlalchemy.orm import Session
 from sqlalchemy import func
+from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import asc
 
 from app.db.models import Product, Sale
 from app.schemas import Sales, SalesByProduct
@@ -7,7 +8,7 @@ from app.schemas import Sales, SalesByProduct
 
 # ***************** CRUD Services ***********************
 async def get_all(model, schema, db: Session):
-    objs = db.query(model).all()
+    objs = db.query(model).order_by(asc(model.id)).all()
     return list(map(schema.from_orm, objs))
 
 
@@ -78,7 +79,7 @@ async def get_sales_by_product(db: Session):
         Product.name.label('product'),
         func.sum(Sale.quantity).label('quantity'),
         func.sum(Product.price * Sale.quantity).label('amount')
-    ).join(Product).group_by(Product.id).all()
+    ).join(Product).group_by(Product.id).order_by(asc(Product.id)).all()
 
     if not sales:
         return {'error': 'There are no sales yet'}
