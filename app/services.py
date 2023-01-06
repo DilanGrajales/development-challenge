@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import asc
@@ -16,7 +17,7 @@ async def get_by_id(id: int, model, schema, db: Session, msg: str):
     obj = db.query(model).filter(model.id == id).first()
 
     if not obj:
-        return {'error': f'{msg} not found'}
+        raise HTTPException(status_code=404, detail=f'{msg} not found')
 
     return schema.from_orm(obj)
 
@@ -38,7 +39,7 @@ async def update(id: int, data, model, db: Session, msg: str):
     obj = db.query(model).filter(model.id == id).one()
 
     if not obj:
-        return {'error': f'{msg} not found'}
+        raise HTTPException(status_code=404, detail=f'{msg} not found')
 
     try:
         obj_data = data.dict(exclude_unset=True)
@@ -61,7 +62,8 @@ async def delete(id: int, model, db: Session, msg):
     obj = db.query(model).filter(model.id == id).first()
 
     if not obj:
-        return {'error': f'{msg} not found'}
+        raise HTTPException(status_code=404, detail=f'{msg} not found')
+        
 
     try:
         db.delete(obj)
