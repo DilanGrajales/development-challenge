@@ -46,3 +46,8 @@
 - Run using `uvicorn main:app --env-file=.env --reload`
 
 - Go to `http://127.0.0.1:8000/docs` to use Endpoints
+
+## How to run tests
+```python
+pytest test_unit_measurement.py
+```
